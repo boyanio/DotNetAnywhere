@@ -12,15 +12,12 @@ set emccOptions= %sourceFiles% ^
 	-s RESERVED_FUNCTION_POINTERS=20 ^
 	-s ASSERTIONS=1 ^
 	-s EXPORTED_FUNCTIONS="['_main', '_JSInterop_CallDotNet', '_Debugger_Continue', '_Debugger_SetBreakPoint', '_Debugger_Step', '_Debugger_Reset', '_Debugger_Clear_BreakPoints']" ^
-	-s WASM=1 ^
+	-s EXTRA_EXPORTED_RUNTIME_METHODS="['ccall']" ^
+	-s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE="['$Browser']"  ^
+	-s MODULARIZE=1 ^
+	-s EXPORT_NAME="'DotNetAnywhere'" ^
+	-s FORCE_FILESYSTEM=1 ^
 	--js-library js-interop.js
 
-set outputRoot=..\..\Blazor.Host\wwwroot\_framework
-
-echo -------------------------------------------
-echo --- Starting native web assembly build
-call emcc %emccOptions% -s "BINARYEN_METHOD='native-wasm'" -o %outputRoot%\wasm\dna.js
-
-echo -------------------------------------------
-echo --- Starting asm.js build
-call emcc %emccOptions% -s "BINARYEN_METHOD='asmjs'" -o %outputRoot%\asmjs\dna.js
+@mkdir ..\build
+call emcc %emccOptions% -o ..\build\dna.js
