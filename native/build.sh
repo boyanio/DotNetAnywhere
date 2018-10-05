@@ -1,8 +1,11 @@
 #!/bin/bash
 
-mkdir -p ../build
+CURRENTDIR=$(dirname "$0")
+BUILDDIR=$CURRENTDIR/../build
 
-emcc $(find src -name "*.c" -type f) \
+mkdir -p $BUILDDIR
+
+emcc $(find $CURRENTDIR/src -name "*.c" -type f) \
      -Wno-pointer-sign \
      -Oz \
      -s NO_EXIT_RUNTIME=1 \
@@ -14,5 +17,5 @@ emcc $(find src -name "*.c" -type f) \
      -s MODULARIZE=1 \
      -s EXPORT_NAME="'DotNetAnywhere'" \
      -s FORCE_FILESYSTEM=1 \
-     --js-library js-interop.js \
-     -o ../build/dna.js
+     --js-library $CURRENTDIR/js-interop.js \
+     -o $BUILDDIR/dna.js
