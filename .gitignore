@@ -1,4 +1,4 @@
-Debug
-native/Debug
-native/x64
+bin
+obj
+.vs
 build
